@@ -2,7 +2,7 @@
 # Reproducible Jupyter scientific image
 # ------------------------------------------------------------------------------
 
-FROM quay.io/jupyter/minimal-notebook:python-3.11
+FROM quay.io/jupyter/minimal-notebook:python-3.11 AS base
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -57,6 +57,25 @@ RUN rm -rf "/home/${NB_USER}/.cache/"
 # ------------------------------------------------------------------------------
 # Runtime context (Jupyter user)
 # ------------------------------------------------------------------------------
+
+USER ${NB_UID}
+WORKDIR "${HOME}"
+
+# ------------------------------------------------------------------------------
+# DEV / TEST TOOLING LAYER (local only)
+# ------------------------------------------------------------------------------
+
+FROM base AS test
+
+RUN mamba install -n base -c conda-forge \
+    pytest \
+    black \
+    flake8 \
+    mypy \
+    isort && \
+    mamba clean --all -f -y && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
 
 USER ${NB_UID}
 WORKDIR "${HOME}"
