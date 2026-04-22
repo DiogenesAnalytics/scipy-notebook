@@ -3,3 +3,6 @@ bin/
 
 # for pycache
 __pycache__/
+
+# for linters
+.cache/
