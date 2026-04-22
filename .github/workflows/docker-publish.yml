@@ -18,6 +18,7 @@ env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
+  TEST_IMAGE: pytest_test_image
 
 
 concurrency:
@@ -79,7 +80,7 @@ jobs:
           context: .
           target: test
           load: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:ci
+          tags: ${{ env.REGISTRY }}/${{ env.TEST_IMAGE }}:ci
           cache-from: type=gha
           cache-to: type=gha,mode=max
           pull: true
@@ -87,11 +88,10 @@ jobs:
       # Run tests on image before publishing
       - name: Run pytest inside container
         run: |
-            IMAGE="${{ env.REGISTRY }}/$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]'):ci"
-            docker run --rm \
+          docker run --rm \
             -v ${{ github.workspace }}:/home/jovyan \
             -w /home/jovyan \
-            $IMAGE \
+            ${{ env.REGISTRY }}/${{ env.TEST_IMAGE }}:ci \
             pytest
 
       # Build and push Docker image with Buildx (don't push on PR)
