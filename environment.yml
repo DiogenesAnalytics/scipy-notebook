@@ -1,0 +1,30 @@
+name: base
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.11
+  - numpy>=2,<3
+  - poetry
+  - scipy
+  - pandas
+  - matplotlib-base
+  - scikit-learn
+  - scikit-image
+  - statsmodels
+  - sympy
+  - seaborn
+  - ipywidgets
+  - ipympl
+  - bokeh
+  - altair
+  - openpyxl
+  - sqlalchemy
+  - dask
+  - numba
+  - numexpr
+  - h5py
+  - pytables
+  - beautifulsoup4
+  - xlrd
+  - pip
