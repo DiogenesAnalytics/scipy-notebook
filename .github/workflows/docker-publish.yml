@@ -92,7 +92,7 @@ jobs:
             -v ${{ github.workspace }}:/home/jovyan \
             -w /home/jovyan \
             ${{ env.REGISTRY }}/${{ env.TEST_IMAGE }}:ci \
-            pytest
+            pytest -p no:cacheprovider
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
