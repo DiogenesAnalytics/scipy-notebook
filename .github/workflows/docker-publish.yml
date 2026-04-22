@@ -87,10 +87,11 @@ jobs:
       # Run tests on image before publishing
       - name: Run pytest inside container
         run: |
-          docker run --rm \
+            IMAGE="${{ env.REGISTRY }}/$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]'):ci"
+            docker run --rm \
             -v ${{ github.workspace }}:/home/jovyan \
             -w /home/jovyan \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:ci \
+            $IMAGE \
             pytest
 
       # Build and push Docker image with Buildx (don't push on PR)
