@@ -1,0 +1,5 @@
+# for act local install
+bin/
+
+# for pycache
+__pycache__/
