@@ -1,3 +1,4 @@
+[![Docker](https://github.com/DiogenesAnalytics/scipy-notebook/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/DiogenesAnalytics/scipy-notebook/actions/workflows/docker-publish.yml)
 # Reproducible Jupyter Scientific Image
 A minimal, reproducible Jupyter Docker image built on
 `quay.io/jupyter/minimal-notebook`, with a fully pinned scientific Python stack
