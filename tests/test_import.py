@@ -53,3 +53,20 @@ def test_extended_imports() -> None:
     assert dask.__version__ is not None
     assert numexpr.__version__ is not None
     assert bs4.__version__ is not None
+
+
+def test_widget_imports() -> None:
+    """
+    Verify interactive notebook widget packages import correctly.
+
+    Ensures the notebook image includes functional interactive
+    widget support required by Jupyter frontends.
+
+    Raises:
+        AssertionError: If either package lacks version metadata.
+    """
+    import ipympl
+    import ipywidgets
+
+    assert ipympl.__version__ is not None
+    assert ipywidgets.__version__ is not None
