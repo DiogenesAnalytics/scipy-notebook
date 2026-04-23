@@ -1,4 +1,4 @@
-.PHONY: all build test test-shell build-test install-act check-act run-act-tests
+.PHONY: all build tests test-shell build-tests install-act check-act run-act-tests
 
 ################################################################################
 # GLOBALS
