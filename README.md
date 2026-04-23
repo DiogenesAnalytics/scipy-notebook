@@ -18,63 +18,82 @@ quay.io/jupyter/minimal-notebook:python-3.11
 ---
 
 ## 📦 Scientific Stack
+Installed from `environment.yml` into the base conda environment.
 
-Installed via `environment.yml` into the base conda environment using `mamba`.
+Includes:
 
-Includes a pinned scientific Python ecosystem (NumPy/SciPy/Pandas,
-JupyterLab, visualization, ML tooling, etc.).
+* NumPy
+* SciPy
+* pandas
+* matplotlib
+* scikit-learn
+* scikit-image
+* statsmodels
+* JupyterLab
 
 ---
 
 ## 🏗️ Build
 
-### Build image
+### Build the base image
 
 ```bash
-make build
+make build-base
 ```
 
-### Force clean rebuild
+### Force a clean rebuild
 
 ```bash
-DCKR_NOCACHE=true make build
+DCKR_NOCACHE=true DCKR_PULL=false make build-base
 ```
 
 ---
 
-## 🐳 Docker Build Behavior
+## Build the test image
 
-* Always pulls latest base image (`--pull`)
-* Uses optional cache control via `DCKR_NOCACHE`
-* Outputs image:
+The test image includes the tooling required to validate the container.
 
+```bash
+make build-tests
 ```
-ghcr.io/diogenesanalytics/<repo-name>:base
+
+---
+
+## Testing
+Run the test suite inside the Docker test image:
+
+```bash
+make pytest
+```
+
+Run the full validation workflow:
+
+```bash
+make tests
 ```
 
 ---
 
 ## 🧪 Local CI (GitHub Actions via `act`)
-
-### Install `act`
+Install `act`:
 
 ```bash
 make install-act
 ```
 
-### Check install
+Verify installation:
 
 ```bash
 make check-act
 ```
 
-### Run tests locally
+Run the GitHub Actions build workflow locally:
 
 ```bash
 make run-act-tests
 ```
 
-With arguments:
+Pass extra arguments to `act` if needed:
 
 ```bash
 make run-act-tests ARGS="-v"
@@ -85,27 +104,32 @@ make run-act-tests ARGS="-v"
 ## 🔁 Typical Workflow
 
 ```bash
-make build
-make run-act-tests
+make build-base
+make build-tests
+make pytest
 ```
 
-or:
+For a fully clean rebuild:
 
 ```bash
-DCKR_NOCACHE=true make build
-make run-act-tests
+DCKR_NOCACHE=true DCKR_PULL=false make build-base
+DCKR_NOCACHE=true DCKR_PULL=false make build-tests
+make pytest
 ```
 
 ---
 
 ## 🛠️ Makefile Commands
 
-| Command              | Description                           |
-| -------------------- | ------------------------------------- |
-| `make build`         | Build Docker image                    |
-| `make install-act`   | Install GitHub Actions runner (`act`) |
-| `make check-act`     | Verify `act` installation             |
-| `make run-act-tests` | Run GitHub Actions locally            |
+| Command              | Description                |
+| -------------------- | -------------------------- |
+| `make build-base`    | Build the notebook image   |
+| `make build-tests`   | Build the test image       |
+| `make pytest`        | Run container tests        |
+| `make tests`         | Run full validation suite  |
+| `make install-act`   | Install `act`              |
+| `make check-act`     | Verify `act`               |
+| `make run-act-tests` | Run GitHub Actions locally |
 
 ---
 
@@ -122,7 +146,6 @@ make run-act-tests
 ---
 
 ## 🚀 Intended Use
-
 This image is intended as a **base layer** for:
 
 * research environments
@@ -133,21 +156,11 @@ This image is intended as a **base layer** for:
 ---
 
 ## 📌 Extending
-
 Example downstream usage:
 
 ```dockerfile
-FROM ghcr.io/diogenesanalytics/<repo-name>:master
+FROM ghcr.io/diogenesanalytics/scipy-notebook:master
 
-
-COPY pyproject.toml poetry.lock .
+COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-root
 ```
-
----
-
-## 🧠 Principle
-
-> Conda defines the scientific world.
-> Poetry defines the application world.
-> Docker defines the boundary.
