@@ -29,3 +29,27 @@ def test_core_imports() -> None:
     assert sklearn.__version__ is not None
 
     assert sys.version_info.major == 3
+
+
+def test_extended_imports() -> None:
+    """
+    Verify extended scientific ecosystem imports.
+
+    Raises:
+        AssertionError: If any package fails to import.
+    """
+    import altair
+    import bokeh
+    import bs4
+    import dask
+    import numexpr
+    import seaborn
+    import sympy
+
+    assert sympy.__version__ is not None
+    assert seaborn.__version__ is not None
+    assert bokeh.__version__ is not None
+    assert altair.__version__ is not None
+    assert dask.__version__ is not None
+    assert numexpr.__version__ is not None
+    assert bs4.__version__ is not None
